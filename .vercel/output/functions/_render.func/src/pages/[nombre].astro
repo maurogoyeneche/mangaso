@@ -1,0 +1,14 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Welcome from "../components/Welcome.astro";
+
+// En modo SSR no necesitamos getStaticPaths
+const { nombre } = Astro.params;
+const nombreCapitalizado = nombre
+  ? nombre.charAt(0).toUpperCase() + nombre.slice(1).toLowerCase()
+  : "Amigo";
+---
+
+<Layout title={`¿Me prestás $500? - ${nombreCapitalizado}`}>
+  <Welcome nombre={nombre} />
+</Layout>
