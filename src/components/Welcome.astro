@@ -577,13 +577,29 @@ const nombreCapitalizado =
   @media screen and (min-width: 769px) {
     .button-container {
       flex-direction: row;
-      gap: 16px;
+      gap: 20px;
       justify-content: center;
+      max-width: 500px;
+      margin: 0 auto;
     }
 
     .button {
-      flex: 1;
-      max-width: min(90%, 200px);
+      flex: 0 0 auto;
+      width: auto;
+      min-width: 120px;
+      max-width: 180px;
+      padding: 14px 28px;
+      font-size: 16px;
+      min-height: 50px;
+    }
+
+    h1 {
+      font-size: 28px;
+      margin-bottom: 30px;
+    }
+
+    #hero {
+      gap: 25px;
     }
   }
 </style>

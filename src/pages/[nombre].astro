@@ -2,7 +2,16 @@
 import Layout from "../layouts/Layout.astro";
 import Welcome from "../components/Welcome.astro";
 
-// En modo SSR no necesitamos getStaticPaths
+export async function getStaticPaths() {
+  // Pre-renderizar algunas rutas comunes
+  const nombres = ['fer', 'mau', 'ana', 'luis', 'jose', 'maria', 'carlos', 'laura', 'diego', 'sofia'];
+  
+  return nombres.map(nombre => ({
+    params: { nombre },
+    props: { nombre }
+  }));
+}
+
 const { nombre } = Astro.params;
 const nombreCapitalizado = nombre
   ? nombre.charAt(0).toUpperCase() + nombre.slice(1).toLowerCase()
