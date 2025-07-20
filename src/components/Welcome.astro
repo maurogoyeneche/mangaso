@@ -1,16 +1,7 @@
 ---
 import astroLogo from "../assets/astro.svg";
 import background from "../assets/background.svg";
-
-interface Props {
-  nombre?: string;
-}
-
-const { nombre } = Astro.props;
 ---
-
-<!-- Meta tag para pasar el nombre al JavaScript -->
-<meta name="astro-nombre" content={nombre || "Amigo"} />
 
 <div id="container">
   <img id="background" src={background.src} alt="" fetchpriority="high" />
@@ -70,27 +61,15 @@ const { nombre } = Astro.props;
   let nombreUsuario = "Amigo";
   let nombreCapitalizado = "Amigo";
 
-  // Inicializar la página con el nombre pasado como prop
+  // Inicializar la página obteniendo el nombre de la URL
   function initializePage() {
-    // Verificar si hay un nombre pasado desde Astro
-    const astroNombre = document.querySelector(
-      'meta[name="astro-nombre"]'
-    )?.content;
+    // Obtener el nombre directamente de la URL path
+    const path = window.location.pathname;
+    const segments = path.split("/").filter((segment) => segment.length > 0);
 
-    if (astroNombre && astroNombre !== "Amigo") {
-      nombreUsuario = astroNombre;
-    } else {
-      // Fallback: obtener de la URL como antes
-      const path = window.location.pathname;
-      const urlParams = new URLSearchParams(window.location.search);
-
-      const segments = path.split("/").filter((segment) => segment.length > 0);
-
-      if (segments.length > 0 && segments[0] !== "index.html") {
-        nombreUsuario = segments[0];
-      } else if (urlParams.has("nombre")) {
-        nombreUsuario = urlParams.get("nombre");
-      }
+    // Si hay un segmento en la URL, usarlo como nombre
+    if (segments.length > 0 && segments[0] !== "index.html") {
+      nombreUsuario = segments[0];
     }
 
     nombreCapitalizado =

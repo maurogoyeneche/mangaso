@@ -7,7 +7,16 @@ import tailwindcss from "@tailwindcss/vite";
 export default defineConfig({
   output: "static",
   integrations: [react()],
+  server: {
+    // En desarrollo, redirigir todas las rutas 404 a /
+    // Esto simula el comportamiento de Vercel
+    open: false,
+  },
   vite: {
     plugins: [tailwindcss()],
+    server: {
+      // Middleware para manejar rutas SPA en desarrollo
+      middlewareMode: false,
+    },
   },
 });
