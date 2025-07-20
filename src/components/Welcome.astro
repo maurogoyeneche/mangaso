@@ -9,6 +9,9 @@ interface Props {
 const { nombre } = Astro.props;
 ---
 
+<!-- Meta tag para pasar el nombre al JavaScript -->
+<meta name="astro-nombre" content={nombre || "Amigo"} />
+
 <div id="container">
   <img id="background" src={background.src} alt="" fetchpriority="high" />
   <main>
@@ -67,18 +70,32 @@ const { nombre } = Astro.props;
   let nombreUsuario = "Amigo";
   let nombreCapitalizado = "Amigo";
 
-  // Inicializar la página con el nombre de la URL
+  // Inicializar la página con el nombre pasado como prop
   function initializePage() {
-    // Obtener el nombre de la URL
-    const path = window.location.pathname;
-    const segments = path.split("/").filter((segment) => segment.length > 0);
+    // Verificar si hay un nombre pasado desde Astro
+    const astroNombre = document.querySelector(
+      'meta[name="astro-nombre"]'
+    )?.content;
 
-    if (segments.length > 0) {
-      nombreUsuario = segments[0];
-      nombreCapitalizado =
-        nombreUsuario.charAt(0).toUpperCase() +
-        nombreUsuario.slice(1).toLowerCase();
+    if (astroNombre && astroNombre !== "Amigo") {
+      nombreUsuario = astroNombre;
+    } else {
+      // Fallback: obtener de la URL como antes
+      const path = window.location.pathname;
+      const urlParams = new URLSearchParams(window.location.search);
+
+      const segments = path.split("/").filter((segment) => segment.length > 0);
+
+      if (segments.length > 0 && segments[0] !== "index.html") {
+        nombreUsuario = segments[0];
+      } else if (urlParams.has("nombre")) {
+        nombreUsuario = urlParams.get("nombre");
+      }
     }
+
+    nombreCapitalizado =
+      nombreUsuario.charAt(0).toUpperCase() +
+      nombreUsuario.slice(1).toLowerCase();
 
     // Actualizar el título de la página
     document.title = `¿Me prestás $500? - ${nombreCapitalizado}`;
