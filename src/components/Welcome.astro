@@ -6,16 +6,14 @@ interface Props {
   nombre?: string;
 }
 
-const { nombre = "Amigo" } = Astro.props;
-const nombreCapitalizado =
-  nombre.charAt(0).toUpperCase() + nombre.slice(1).toLowerCase();
+const { nombre } = Astro.props;
 ---
 
 <div id="container">
   <img id="background" src={background.src} alt="" fetchpriority="high" />
   <main>
     <section id="hero">
-      <h1>{nombreCapitalizado}, me prestás $500 pesos?</h1>
+      <h1 id="titulo">Amigo, me prestás $500 pesos?</h1>
       <section class="button-container">
         <button class="button si" onclick="showCelebration()">Si</button>
         <button class="button" id="no-button" onclick="handleClick()">No</button
@@ -28,11 +26,11 @@ const nombreCapitalizado =
   <div id="celebration-modal" class="modal hidden">
     <div class="modal-content">
       <div class="modal-header">
-        <h2>🎉 ¡FELICITACIONES {nombreCapitalizado.toUpperCase()}! 🎉</h2>
+        <h2 id="modal-titulo">🎉 ¡FELICITACIONES! 🎉</h2>
       </div>
       <div class="celebration-text">
         <p>¡Sabía que me ibas a decir que sí!</p>
-        <p>¡Eres el mejor amigo del mundo, {nombreCapitalizado}! 💰</p>
+        <p id="modal-texto">¡Eres el mejor amigo del mundo! 💰</p>
         <p class="money-text">Los $500 pesos están en buenas manos 🤝</p>
       </div>
       <div class="emoji-rain">
@@ -47,8 +45,12 @@ const nombreCapitalizado =
         <span style="--i: 8">🤑</span>
         <span style="--i: 9">💸</span>
       </div>
-      <button class="button close-btn" onclick="closeCelebration()">
-        ¡Gracias {nombreCapitalizado}! 🙏
+      <button
+        class="button close-btn"
+        id="modal-boton"
+        onclick="closeCelebration()"
+      >
+        ¡Gracias! 🙏
       </button>
     </div>
   </div>
@@ -61,6 +63,59 @@ const nombreCapitalizado =
 ></script>
 
 <script is:inline>
+  // Variables globales para el nombre
+  let nombreUsuario = "Amigo";
+  let nombreCapitalizado = "Amigo";
+
+  // Inicializar la página con el nombre de la URL
+  function initializePage() {
+    // Obtener el nombre de la URL
+    const path = window.location.pathname;
+    const segments = path.split("/").filter((segment) => segment.length > 0);
+
+    if (segments.length > 0) {
+      nombreUsuario = segments[0];
+      nombreCapitalizado =
+        nombreUsuario.charAt(0).toUpperCase() +
+        nombreUsuario.slice(1).toLowerCase();
+    }
+
+    // Actualizar el título de la página
+    document.title = `¿Me prestás $500? - ${nombreCapitalizado}`;
+
+    // Actualizar el contenido dinámico
+    updateContent();
+  }
+
+  function updateContent() {
+    // Actualizar título principal
+    const titulo = document.getElementById("titulo");
+    if (titulo) {
+      titulo.textContent = `${nombreCapitalizado}, me prestás $500 pesos?`;
+    }
+
+    // Actualizar título del modal
+    const modalTitulo = document.getElementById("modal-titulo");
+    if (modalTitulo) {
+      modalTitulo.textContent = `🎉 ¡FELICITACIONES ${nombreCapitalizado.toUpperCase()}! 🎉`;
+    }
+
+    // Actualizar texto del modal
+    const modalTexto = document.getElementById("modal-texto");
+    if (modalTexto) {
+      modalTexto.textContent = `¡Eres el mejor amigo del mundo, ${nombreCapitalizado}! 💰`;
+    }
+
+    // Actualizar botón del modal
+    const modalBoton = document.getElementById("modal-boton");
+    if (modalBoton) {
+      modalBoton.textContent = `¡Gracias ${nombreCapitalizado}! 🙏`;
+    }
+  }
+
+  // Ejecutar cuando el DOM esté listo
+  document.addEventListener("DOMContentLoaded", initializePage);
+
   function handleClick() {
     const noButton = document.getElementById("no-button");
     const container = document.getElementById("container");
