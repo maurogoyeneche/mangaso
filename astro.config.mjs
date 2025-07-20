@@ -9,7 +9,7 @@ export default defineConfig({
   integrations: [react()],
   output: "server", // Habilitar SSR para rutas dinámicas
   adapter: node({
-    mode: "standalone"
+    mode: "standalone",
   }),
   vite: {
     plugins: [tailwindcss()],
