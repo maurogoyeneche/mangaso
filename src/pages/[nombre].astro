@@ -4,11 +4,22 @@ import Welcome from "../components/Welcome.astro";
 
 export async function getStaticPaths() {
   // Pre-renderizar algunas rutas comunes
-  const nombres = ['fer', 'mau', 'ana', 'luis', 'jose', 'maria', 'carlos', 'laura', 'diego', 'sofia'];
-  
-  return nombres.map(nombre => ({
+  const nombres = [
+    "fer",
+    "mau",
+    "ana",
+    "luis",
+    "jose",
+    "maria",
+    "carlos",
+    "laura",
+    "diego",
+    "sofia",
+  ];
+
+  return nombres.map((nombre) => ({
     params: { nombre },
-    props: { nombre }
+    props: { nombre },
   }));
 }
 
